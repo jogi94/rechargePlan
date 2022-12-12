@@ -1,0 +1,26 @@
+<html>
+<head>
+<title>
+    Recharge Plan List
+</title>
+</head>
+<body>
+
+{% for i in rechargePlanList %}
+<br>
+price : {{i.price}}
+<br>
+combo  : {{i.combo|safe}}
+<br>
+{{i.data_with_rollover}}
+<br>
+{{i.sms_per_day}}
+<br>
+{{i.local_std_and_roaming_calls}}
+<br>
+<div class="text-center">
+    <a href="{{i.get_absolute_url}}" type="button" class="btn btn-dark cont-on-main  text-white btn-sm">Know More</a>
+</div>
+{% endfor %}
+</body>
+</html>
