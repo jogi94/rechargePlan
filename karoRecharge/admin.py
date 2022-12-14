@@ -28,7 +28,7 @@ class imagesAdmin(admin.StackedInline):
 
 @admin.register(rechargePlan)
 class rechargePlanAdmin(SummernoteModelAdmin, admin.ModelAdmin):
-    list_display = ('price',)
+    list_display = ('price','pk',)
     list_filter = ('price',)
     prepopulated_fields = {'slug': ('price',)}
     inlines = [imagesAdmin]
@@ -38,4 +38,10 @@ class rechargePlanAdmin(SummernoteModelAdmin, admin.ModelAdmin):
 class ImagesAdmin(SummernoteModelAdmin, admin.ModelAdmin):
     list_display = ('title', 'file','description', 'rechargePlan',)
     list_filter = ('file',)
+    actions = [approvePost, draftPost,] 
+
+@admin.register(generateCustomerRecharge)
+class generateCustomerRechargeAdmin(SummernoteModelAdmin, admin.ModelAdmin):
+    list_display = ('customerNumber',)
+    list_filter = ('customerNumber',)
     actions = [approvePost, draftPost,] 

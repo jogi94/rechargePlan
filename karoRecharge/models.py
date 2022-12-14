@@ -27,14 +27,16 @@ class rechargePlan(models.Model):
         return reverse('karoRecharge:rechargePlanDetailUrl', args=[self.slug])
     
     def __str__(self):
-        return f"Plan -- {self.price}" or '--Name not provided--'
+        return str(self.price) or '--Name not provided--'
+    class Meta:
+        verbose_name_plural = 'Prepaid Recharge Plan List'
 
 
 class Images(models.Model):
 	file = models.FileField('File', upload_to='images/', null=True, blank=True)
 	title = models.CharField(max_length=100, null=True, blank=True)
 	description = models.CharField(max_length=250, null=True, blank=True)
-	rechargePlan = models.ForeignKey(rechargePlan, related_name='imagesRP', on_delete=models.SET_NULL, blank=True, null=True)
+	rechargePlan = models.OneToOneField(rechargePlan, related_name='imagesRP', on_delete=models.SET_NULL, blank=True, null=True)
 
 	def __str__(self):
 		return self.filename
@@ -42,3 +44,20 @@ class Images(models.Model):
 	@property
 	def filename(self):
 		return self.file.name.rsplit('/', 1)[-1]
+
+class generateCustomerRecharge(models.Model):
+    customerName = models.CharField(max_length=256,null=True, blank=True)
+    customerNumber = models.BigIntegerField(null=True, blank=True)
+    customerPlan = models.OneToOneField(rechargePlan, related_name='customerPlanCMN', on_delete=models.CASCADE, null=True, blank=True)
+    publish = models.DateTimeField(default=timezone.now)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
+    
+    def __str__(self):
+        return f"Number -- {self.customerNumber}" or '--Name not provided--'
+    
+    class Meta:
+        verbose_name_plural = 'Generated recharge List : Customer Numbers'
+
+ 
